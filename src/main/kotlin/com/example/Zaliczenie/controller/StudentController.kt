@@ -38,11 +38,30 @@ class StudentController(val userRepository: UserRepository) {
 
     @GetMapping("/editUser/{userId}")
     private fun showEditUserPage(@PathVariable("userId") id: Long, model: Model): String {
-        println(id);
         val user: Optional<User> = userRepository.findById(id);
-        model["user"] = user;
+        if (!user.isEmpty) {
+            model["id"] = id;
+            model["user"] = user;
+        }
         return "editUser";
     }
+
+    @PostMapping("/updateUser/{userId}")
+    private fun updateUser(
+            @PathVariable("userId") id: Long,
+            @ModelAttribute(value = "user") user: User,
+            model: Model): String {
+
+        user.id = id;
+        try {
+            userRepository.save(user);
+            model["success"] = "User updated";
+        } catch (e: Exception) {
+            model["error"] = e.message!!;
+        }
+
+        return "redirect:/";
+    };
 
     @GetMapping("/error")
     private fun showErrorPage(): String {
