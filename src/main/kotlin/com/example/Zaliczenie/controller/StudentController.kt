@@ -5,10 +5,9 @@ import com.example.Zaliczenie.repositories.UserRepository
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.*
 import java.lang.Exception
+import java.util.*
 
 @Controller
 class StudentController(val userRepository: UserRepository) {
@@ -20,7 +19,7 @@ class StudentController(val userRepository: UserRepository) {
     }
 
     @GetMapping("/showCreateUser")
-    private fun getCreateUserPage(model: Model): String {
+    private fun showCreateUserPage(model: Model): String {
         model["user"] = User();
         return "newUser";
     }
@@ -32,9 +31,21 @@ class StudentController(val userRepository: UserRepository) {
             model["success"] = "User created";
         } catch (e: Exception) {
             model["error"] = e.message!!;
-            return "error";
         }
 
         return "newUser";
     };
+
+    @GetMapping("/editUser/{userId}")
+    private fun showEditUserPage(@PathVariable("userId") id: Long, model: Model): String {
+        println(id);
+        val user: Optional<User> = userRepository.findById(id);
+        model["user"] = user;
+        return "editUser";
+    }
+
+    @GetMapping("/error")
+    private fun showErrorPage(): String {
+        return "error_404";
+    }
 }
