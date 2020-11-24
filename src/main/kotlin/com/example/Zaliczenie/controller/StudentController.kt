@@ -8,18 +8,23 @@ import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import java.lang.Exception
 import java.util.*
 
 @Controller
 class StudentController(val userRepository: UserRepository, val activitieRepository: ActivitieRepository) {
 
-    @GetMapping("/")
-    private fun getStudents(model: Model, keyword: String): String {
+    @GetMapping(value = arrayOf("/{activity}", "/"))
+    private fun getStudents(@PathVariable("activity", required = false) activity: String, model: Model, keyword: String): String {
         model["users"] = userRepository.findAll();
+        model["activities"] = activitieRepository.findAll();
 
         if (keyword != null) {
             model["users"] = userRepository.findByKeyword(keyword);
+        }
+
+        if (activity != null) {
+            model["users"] = activitieRepository.findByName(activity).users;
+            model["activity"] = activity;
         }
 
         return "index";
@@ -69,13 +74,12 @@ class StudentController(val userRepository: UserRepository, val activitieReposit
             @RequestParam(value = "image") multipartFile: MultipartFile,
             @ModelAttribute(value = "user") user: User,
             model: Model): String {
+        user.id = id;
 
         if (multipartFile != null) {
             val imageArray: ByteArray = multipartFile.bytes;
             user.userPhoto = Base64.getEncoder().encodeToString(imageArray);
         }
-
-        user.id = id;
         try {
             userRepository.save(user);
             model["success"] = "User updated";
