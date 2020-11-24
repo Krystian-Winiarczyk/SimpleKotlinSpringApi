@@ -22,8 +22,6 @@ class StudentController(val userRepository: UserRepository, val activitieReposit
             model["users"] = userRepository.findByKeyword(keyword);
         }
 
-
-
         return "index";
     }
 
@@ -55,8 +53,9 @@ class StudentController(val userRepository: UserRepository, val activitieReposit
 
     @GetMapping("/editUser/{userId}")
     private fun showEditUserPage(@PathVariable("userId") id: Long, model: Model): String {
-        val user: Optional<User> = userRepository.findById(id);
-        if (!user.isEmpty) {
+        val user: User = userRepository.findUserById(id);
+
+        if (user != null) {
             model["activities"] = activitieRepository.findAll();
             model["id"] = id;
             model["user"] = user;
@@ -67,8 +66,14 @@ class StudentController(val userRepository: UserRepository, val activitieReposit
     @PostMapping("/updateUser/{userId}")
     private fun updateUser(
             @PathVariable("userId") id: Long,
+            @RequestParam(value = "image") multipartFile: MultipartFile,
             @ModelAttribute(value = "user") user: User,
             model: Model): String {
+
+        if (multipartFile != null) {
+            val imageArray: ByteArray = multipartFile.bytes;
+            user.userPhoto = Base64.getEncoder().encodeToString(imageArray);
+        }
 
         user.id = id;
         try {

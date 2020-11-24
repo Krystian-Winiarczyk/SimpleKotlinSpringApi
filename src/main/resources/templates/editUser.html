@@ -14,7 +14,7 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div class="container my-5">
-    <form class="col-8 mx-auto" action="#" th:action="@{/updateUser/{userId}(userId=${id})}" th:object="${user}" method="post" th:if="${user}">
+    <form class="col-8 mx-auto" action="#" th:action="@{/updateUser/{userId}(userId=${id})}" th:object="${user}" method="post" th:if="${user}" enctype="multipart/form-data">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputEmail4">Name</label>
@@ -32,6 +32,16 @@
         <div class="form-group">
             <label for="inputAddress2">Index Number</label>
             <input type="number" class="form-control" id="inputAddress2" th:field="*{indexNumber}">
+        </div>
+        <div class="input-group mb-3" id="uploadFile">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="file" accept="image/png, image/jpeg" name="image">
+                <label class="custom-file-label" for="file" id="fileLabel">Choose file</label>
+            </div>
+        </div>
+        <div style="text-align: center">
+            <img th:if="${user.userPhoto.length != 0}" th:src="*{'data:image/png;base64,'+userPhoto}" alt="image preview" style="height: 125px; width: 125px;" class="imagePreview" />
+            <img th:unless="${user.userPhoto.length != 0}" src="https://www.chs-studio.com/wp-content/uploads/2018/07/Pytajnik.jpg" style="height: 125px; width: 125px;" class="imagePreview" />
         </div>
         <div class="form-check" th:each="activitie : ${activities}">>
             <input class="form-check-input" type="checkbox" name="exampleRadios" th:id="${activitie.name}" th:value="${activitie.id}" th:field="*{activities}">
@@ -52,3 +62,19 @@
 </div>
 </body>
 </html>
+
+<script>
+    document.querySelector("#file").addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            const result = reader.result;
+
+            document.querySelector(".imagePreview").src = result;
+            document.querySelector("#fileLabel").textContent = file.name;
+
+        };
+    });
+</script>

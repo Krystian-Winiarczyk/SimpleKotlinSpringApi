@@ -2,54 +2,80 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Users List</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <!-- CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
     <!-- jQuery and JS bundle w/ Popper.js -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
 </head>
 <body>
-    <div th:replace="fragments/header :: header"></div>
-    <div class="container my-5">
-        <form class="col-8 mx-auto" action="#" th:action="@{/createUser}" th:object="${user}" method="post" enctype="multipart/form-data">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="inputEmail4">Name</label>
-                    <input type="text" class="form-control" id="inputEmail4" th:field="*{name}">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputPassword4">Surname</label>
-                    <input type="text" class="form-control" id="inputPassword4" th:field="*{surname}">
-                </div>
+<div th:replace="fragments/header :: header"></div>
+<div class="container my-5">
+    <form class="col-8 mx-auto" action="#" th:action="@{/createUser}" th:object="${user}" method="post"
+          enctype="multipart/form-data">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputEmail4">Name</label>
+                <input type="text" class="form-control" id="inputEmail4" th:field="*{name}">
             </div>
-            <div class="form-group">
-                <label for="inputAddress">Email</label>
-                <input type="email" class="form-control" id="inputAddress" th:field="*{email}">
+            <div class="form-group col-md-6">
+                <label for="inputPassword4">Surname</label>
+                <input type="text" class="form-control" id="inputPassword4" th:field="*{surname}">
             </div>
-            <div class="form-group">
-                <label for="inputAddress2">Index Number</label>
-                <input type="number" class="form-control" id="inputAddress2" th:field="*{indexNumber}">
+        </div>
+        <div class="form-group">
+            <label for="inputAddress">Email</label>
+            <input type="email" class="form-control" id="inputAddress" th:field="*{email}">
+        </div>
+        <div class="form-group">
+            <label for="inputAddress2">Index Number</label>
+            <input type="number" class="form-control" id="inputAddress2" th:field="*{indexNumber}">
+        </div>
+        <div class="input-group mb-3" id="uploadFile">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="file" accept="image/png, image/jpeg" name="image">
+                <label class="custom-file-label" for="file" id="fileLabel">Choose file</label>
             </div>
-            <div class="input-group mb-3">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="file" accept="image/png, image/jpeg" name="image">
-                    <label class="custom-file-label" for="file">Choose file</label>
-                </div>
-            </div>
-            <div class="form-check" th:each="activitie : ${activities}">>
-                <input class="form-check-input" type="checkbox" name="exampleRadios" th:id="${activitie.name}" th:value="${activitie.id}" th:field="*{activities}">
-                <label class="form-check-label" th:for="${activitie.name}" th:text="${activitie.name}"></label>
-            </div>
-            <button type="submit" class="btn btn-primary">Create</button>
-            <div th:if="${success}" class="alert alert-success my-2">
-                <p th:text="${success}"></p>
-            </div>
-            <div th:if="${error}" class="alert alert-danger my-2">
-                <p th:text="${error}"></p>
-            </div>
-        </form>
-    </div>
+        </div>
+        <div style="text-align: center">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Antu_view-preview.svg/1200px-Antu_view-preview.svg.png" alt="image preview" style="height: 125px; width: 125px;" id="imagePreview">
+        </div>
+        <div class="form-check" th:each="activitie : ${activities}">>
+            <input class="form-check-input" type="checkbox" name="exampleRadios" th:id="${activitie.name}"
+                   th:value="${activitie.id}" th:field="*{activities}">
+            <label class="form-check-label" th:for="${activitie.name}" th:text="${activitie.name}"></label>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+        <div th:if="${success}" class="alert alert-success my-2">
+            <p th:text="${success}"></p>
+        </div>
+        <div th:if="${error}" class="alert alert-danger my-2">
+            <p th:text="${error}"></p>
+        </div>
+    </form>
+</div>
 </body>
 </html>
+
+<script>
+    document.querySelector("#file").addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            const result = reader.result;
+
+            document.querySelector("#imagePreview").src = result;
+            document.querySelector("#fileLabel").textContent = file.name;
+
+        };
+    });
+</script>
