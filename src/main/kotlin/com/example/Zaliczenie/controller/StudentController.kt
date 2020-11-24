@@ -1,6 +1,7 @@
 package com.example.Zaliczenie.controller
 
 import com.example.Zaliczenie.models.User
+import com.example.Zaliczenie.repositories.ActivitieRepository
 import com.example.Zaliczenie.repositories.UserRepository
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -10,16 +11,22 @@ import java.lang.Exception
 import java.util.*
 
 @Controller
-class StudentController(val userRepository: UserRepository) {
+class StudentController(val userRepository: UserRepository, val activitieRepository: ActivitieRepository) {
 
     @GetMapping("/")
-    private fun getStudents(model: Model): String {
+    private fun getStudents(model: Model, keyword: String): String {
         model["users"] = userRepository.findAll();
+
+        if (keyword != null) {
+            model["users"] = userRepository.findByKeyword(keyword);
+        }
+
         return "index";
     }
 
     @GetMapping("/showCreateUser")
     private fun showCreateUserPage(model: Model): String {
+        model["activities"] = activitieRepository.findAll();
         model["user"] = User();
         return "newUser";
     }
@@ -38,6 +45,7 @@ class StudentController(val userRepository: UserRepository) {
 
     @GetMapping("/editUser/{userId}")
     private fun showEditUserPage(@PathVariable("userId") id: Long, model: Model): String {
+        model["activities"] = activitieRepository.findAll();
         val user: Optional<User> = userRepository.findById(id);
         if (!user.isEmpty) {
             model["id"] = id;
