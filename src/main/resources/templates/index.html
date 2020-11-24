@@ -21,6 +21,7 @@
         <thead class="thead-dark">
         <tr>
             <th scope="col">Id</th>
+            <th scope="col">Photo</th>
             <th scope="col">Name</th>
             <th scope="col">Surname</th>
             <th scope="col">Email</th>
@@ -31,6 +32,10 @@
         <tbody>
         <tr th:each="user : ${users}">
             <td th:text="${user.id}"></td>
+            <td>
+                <img style="height: 50px" th:if="${user.userPhoto.length != 0}" th:src="*{'data:image/png;base64,'+user.userPhoto}" />
+                <img style="height: 50px" th:unless="${user.userPhoto.length != 0}" src="https://www.chs-studio.com/wp-content/uploads/2018/07/Pytajnik.jpg" />
+            </td>
             <td th:text="${user.name}"></td>
             <td th:text="${user.surname}"></td>
             <td th:text="${user.email}"></td>

@@ -16,6 +16,8 @@ class User(
                 inverseJoinColumns = arrayOf(JoinColumn(name = "activitie_id", referencedColumnName = "id"))
         )
         var activities: List<Activitie> = mutableListOf<Activitie>(),
+        @Column(columnDefinition = "LONGTEXT")
+        var userPhoto: String = "",
 
         @Id @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Long? = 0,

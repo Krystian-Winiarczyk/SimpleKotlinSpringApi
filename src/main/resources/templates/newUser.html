@@ -13,7 +13,7 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
     <div class="container my-5">
-        <form class="col-8 mx-auto" action="#" th:action="@{/createUser}" th:object="${user}" method="post">
+        <form class="col-8 mx-auto" action="#" th:action="@{/createUser}" th:object="${user}" method="post" enctype="multipart/form-data">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="inputEmail4">Name</label>
@@ -31,6 +31,12 @@
             <div class="form-group">
                 <label for="inputAddress2">Index Number</label>
                 <input type="number" class="form-control" id="inputAddress2" th:field="*{indexNumber}">
+            </div>
+            <div class="input-group mb-3">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="file" accept="image/png, image/jpeg" name="image">
+                    <label class="custom-file-label" for="file">Choose file</label>
+                </div>
             </div>
             <div class="form-check" th:each="activitie : ${activities}">>
                 <input class="form-check-input" type="checkbox" name="exampleRadios" th:id="${activitie.name}" th:value="${activitie.id}" th:field="*{activities}">
