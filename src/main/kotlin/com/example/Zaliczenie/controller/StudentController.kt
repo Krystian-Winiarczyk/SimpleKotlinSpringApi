@@ -14,7 +14,10 @@ import java.util.*
 class StudentController(val userRepository: UserRepository, val activitieRepository: ActivitieRepository) {
 
     @GetMapping(value = arrayOf("/{activity}", "/"))
-    private fun getStudents(@PathVariable("activity", required = false) activity: String, model: Model, keyword: String): String {
+    private fun getStudents(
+            @PathVariable("activity", required = false) activity: String,
+            model: Model,
+            keyword: String): String {
         model["users"] = userRepository.findAll();
         model["activities"] = activitieRepository.findAll();
 
@@ -22,8 +25,9 @@ class StudentController(val userRepository: UserRepository, val activitieReposit
             model["users"] = userRepository.findByKeyword(keyword);
         }
 
-        if (activity != null) {
-            model["users"] = activitieRepository.findByName(activity).users;
+        if (activity != null && activity != "favicon.ico") {
+            val users: List<User>? = activitieRepository.findByName(activity).users;
+            model["users"] = users!!;
             model["activity"] = activity;
         }
 

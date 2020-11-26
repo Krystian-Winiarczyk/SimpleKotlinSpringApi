@@ -14,7 +14,7 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div class="container my-5">
-    <form class="col-8 mx-auto" action="#" th:action="@{/updateUser/{userId}(userId=${id})}" th:object="${user}" method="post" th:if="${user}" enctype="multipart/form-data">
+    <form class="col-8 mx-auto" action="#" th:action="@{/updateUser/{userId}(userId=${user.id})}" th:object="${user}" method="post" th:if="${user}" enctype="multipart/form-data">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputEmail4">Name</label>
